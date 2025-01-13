@@ -1,12 +1,9 @@
 from PyQt6.QtGui import QTextCharFormat, QFont
 from PyQt6.QtWidgets import (
-    QColorDialog, QFontDialog
+    QColorDialog, QFontDialog, QTextEdit
 )
 
 class TextEditorFunctions:
-    def new_action(self, text_field):
-        text_field.clear()
-
     def toggle_bold(self, text_field):
         cursor = text_field.textCursor()  
         if cursor.hasSelection():  
@@ -64,4 +61,9 @@ class TextEditorFunctions:
                 cursor.mergeCharFormat(char_format)
             else:
                 text_field.setTextColor(color)
+
+    def add_page(self, text_widget):
+        text_field = QTextEdit()
+        page_title = "Страница"
+        text_widget.addTab(text_field, page_title)
 
