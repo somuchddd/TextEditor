@@ -1,8 +1,8 @@
 from PyQt6.QtWidgets import (
     QMainWindow, QTextEdit, QTabWidget, QToolBar
 )
-from PyQt6.QtGui import QAction
-from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QAction, QDesktopServices
+from PyQt6.QtCore import Qt, QUrl
 from functions import TextEditorFunctions
 
 class TextEditorGUI(QMainWindow):
@@ -26,22 +26,25 @@ class TextEditorGUI(QMainWindow):
 
         file_menu = main_menu.addMenu("Файл")
 
-        new_action = QAction("Новый", self)
-        file_menu.addAction(new_action)
+        new_file_action = QAction("Новый", self)
+        file_menu.addAction(new_file_action)
 
-        save_action = QAction("Сохранить", self)
-        file_menu.addAction(save_action)
+        save_file_action = QAction("Сохранить", self)
+        save_file_action.triggered.connect(lambda: self.functions.save_document(self.text_widget))
+        file_menu.addAction(save_file_action)
 
-        open_action = QAction("Открыть", self)
-        file_menu.addAction(open_action)
+        open_file_action = QAction("Открыть", self)
+        file_menu.addAction(open_file_action)
 
         insert_menu = main_menu.addMenu("Вставка")
 
-        image_action = QAction("Изображение", self)
-        insert_menu.addAction(image_action)
+        image_insert_action = QAction("Изображение", self)
+        image_insert_action.triggered.connect(lambda: self.functions.insert_image(self.text_widget.currentWidget()))
+        insert_menu.addAction(image_insert_action)
 
-        hyperlink_action = QAction("Гиперссылка", self)
-        insert_menu.addAction(hyperlink_action)
+        hyperlink_insert_action = QAction("Гиперссылка", self)
+        hyperlink_insert_action.triggered.connect(lambda: self.functions.insert_hyperlink(self.text_widget.currentWidget()))
+        insert_menu.addAction(hyperlink_insert_action)
 
         format_menu = main_menu.addMenu("Формат")
 
@@ -69,23 +72,23 @@ class TextEditorGUI(QMainWindow):
         main_menu.addAction(styles)
     
     def create_toolbar(self):
-           toolbar = QToolBar(self)
-           toolbar.setAllowedAreas(Qt.ToolBarArea.TopToolBarArea | Qt.ToolBarArea.BottomToolBarArea)
-           self.addToolBar(toolbar)
+        toolbar = QToolBar(self)
+        toolbar.setAllowedAreas(Qt.ToolBarArea.TopToolBarArea | Qt.ToolBarArea.BottomToolBarArea)
+        self.addToolBar(toolbar)
 
-           toolbar.setFixedHeight(35)
+        toolbar.setFixedHeight(35)
 
-           add_action = QAction("Создать страницу", self)
-           add_action.triggered.connect(lambda: self.functions.add_page(self.text_widget))
-           toolbar.addAction(add_action)
+        add_action = QAction("Создать страницу", self)
+        add_action.triggered.connect(lambda: self.functions.add_page(self.text_widget))
+        toolbar.addAction(add_action)
 
-           delete_action = QAction("Удалить текущую страницу", self)
-           delete_action.triggered.connect(lambda: self.functions.delete_page(self.text_widget))
-           toolbar.addAction(delete_action)
+        delete_action = QAction("Удалить текущую страницу", self)
+        delete_action.triggered.connect(lambda: self.functions.delete_page(self.text_widget))
+        toolbar.addAction(delete_action)
 
-           numbering_action = QAction("Включить/отключить нумерацию ", self)
-           numbering_action.triggered.connect(lambda: self.functions.toggle_numbering(self.text_widget))
-           toolbar.addAction(numbering_action)
+        numbering_action = QAction("Включить/отключить нумерацию ", self)
+        numbering_action.triggered.connect(lambda: self.functions.toggle_numbering(self.text_widget))
+        toolbar.addAction(numbering_action)
 
 
 

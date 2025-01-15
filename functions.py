@@ -1,6 +1,6 @@
-from PyQt6.QtGui import QTextCharFormat, QFont
+from PyQt6.QtGui import QTextCharFormat, QFont, QColor
 from PyQt6.QtWidgets import (
-    QColorDialog, QFontDialog, QTextEdit, QMessageBox
+    QColorDialog, QFontDialog, QTextEdit, QMessageBox, QFileDialog, QInputDialog
 )
 
 class TextEditorFunctions:
@@ -64,14 +64,29 @@ class TextEditorFunctions:
                 cursor.mergeCharFormat(char_format)
             else:
                 text_field.setTextColor(color)
-
+    
+    def insert_image(self, text_field):
+        file_name, _ = QFileDialog.getOpenFileName(None, "Выбрать изображение", "", "Изображение (*.png *.jpg *.jpeg)")
+        if file_name:
+            cursor = text_field.textCursor()
+            cursor.insertImage(file_name)
+    
+    def insert_hyperlink(self, text_field):
+        url, ok = QInputDialog.getText(None, "Введите ссылку", "Ссылка")
+        hyperlink_style = QTextCharFormat()
+        hyperlink_style.setForeground(QColor(0, 128, 255))
+        hyperlink_style.setFontUnderline(True)
+        if url and ok:
+            cursor = text_field.textCursor()
+            cursor.insertText(url, hyperlink_style)
+            cursor.insertText(" ", QTextCharFormat())
+        
     def add_page(self, text_widget):
-        text_field = QTextEdit()
         if self.numbering == True:
             page_title = f"Страница {text_widget.count() + 1}"
         else:
             page_title = "Страница"
-        text_widget.addTab(text_field, page_title)
+        text_widget.addTab(QTextEdit(), page_title)
     
     def update_titles(self, text_widget):
         for i in range(text_widget.count()):
@@ -81,11 +96,9 @@ class TextEditorFunctions:
                 title = f"Страница"
             text_widget.setTabText(i, title)
             
-
     def toggle_numbering(self, text_widget):
         self.numbering = not self.numbering
         self.update_titles(text_widget)
-
 
     def delete_page(self, text_widget):
         current_index = text_widget.currentIndex()
@@ -94,4 +107,3 @@ class TextEditorFunctions:
         else:
             QMessageBox.warning(None, "Ошибка", "Нет открытых страниц для удаления.")
         self.update_titles(text_widget)
-
