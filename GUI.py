@@ -70,7 +70,7 @@ class TextEditorGUI(QMainWindow):
     
     def create_toolbar(self):
            toolbar = QToolBar(self)
-           toolbar.setAllowedAreas(Qt.ToolBarArea.TopToolBarArea or Qt.ToolBarArea.BottomToolBarArea)
+           toolbar.setAllowedAreas(Qt.ToolBarArea.TopToolBarArea | Qt.ToolBarArea.BottomToolBarArea)
            self.addToolBar(toolbar)
 
            toolbar.setFixedHeight(35)
@@ -80,11 +80,11 @@ class TextEditorGUI(QMainWindow):
            toolbar.addAction(add_action)
 
            delete_action = QAction("Удалить текущую страницу", self)
-           #delete_action.triggered.connect(lambda: self.functions.delete_page(self.text_widget))
+           delete_action.triggered.connect(lambda: self.functions.delete_page(self.text_widget))
            toolbar.addAction(delete_action)
 
            numbering_action = QAction("Включить/отключить нумерацию ", self)
-           #numbering_pages.triggered.connect(lambda: self.functions.numbering_pages(self.text_widget))
+           numbering_action.triggered.connect(lambda: self.functions.toggle_numbering(self.text_widget))
            toolbar.addAction(numbering_action)
 
 
