@@ -1,8 +1,8 @@
 from PyQt6.QtWidgets import (
     QMainWindow, QTextEdit, QTabWidget, QToolBar
 )
-from PyQt6.QtGui import QAction, QDesktopServices
-from PyQt6.QtCore import Qt, QUrl
+from PyQt6.QtGui import QAction
+from PyQt6.QtCore import Qt
 from functions import TextEditorFunctions
 
 class TextEditorGUI(QMainWindow):
@@ -49,28 +49,33 @@ class TextEditorGUI(QMainWindow):
         format_menu = main_menu.addMenu("Формат")
 
         bold_action = QAction("Полужирный", self)
-        bold_action.triggered.connect(lambda: self.functions.toggle_bold(self.text_widget.currentWidget()))
+        bold_action.triggered.connect(lambda: self.functions.toggle_bold(self.text_widget))
         format_menu.addAction(bold_action)
         
         italic_action = QAction("Курсив", self)
-        italic_action.triggered.connect(lambda: self.functions.toggle_italic(self.text_widget.currentWidget()))
+        italic_action.triggered.connect(lambda: self.functions.toggle_italic(self.text_widget))
         format_menu.addAction(italic_action)
         
         underline_action = QAction("Подчёркнутый", self)
-        underline_action.triggered.connect(lambda: self.functions.toggle_underline(self.text_widget.currentWidget()))
+        underline_action.triggered.connect(lambda: self.functions.toggle_underline(self.text_widget))
         format_menu.addAction(underline_action)
 
         font_action = QAction("Шрифт", self)
-        font_action.triggered.connect(lambda: self.functions.change_font(self.text_widget.currentWidget()))
+        font_action.triggered.connect(lambda: self.functions.change_font(self.text_widget))
         format_menu.addAction(font_action)
         
         color_action = QAction("Цвет", self)
-        color_action.triggered.connect(lambda: self.functions.change_text_color(self.text_widget.currentWidget()))
+        color_action.triggered.connect(lambda: self.functions.change_text_color(self.text_widget))
         format_menu.addAction(color_action)
+
+        full_document_action = QAction("Применять стили форматирования ко всему документу", self, checkable=True)
+        full_document_action.setChecked(False)
+        full_document_action.triggered.connect(lambda: self.functions.toggle_full_document_format())
+        format_menu.addAction(full_document_action)
 
         styles = QAction("Пользовательские стили", self)
         main_menu.addAction(styles)
-    
+
     def create_toolbar(self):
         toolbar = QToolBar(self)
         toolbar.setAllowedAreas(Qt.ToolBarArea.TopToolBarArea | Qt.ToolBarArea.BottomToolBarArea)

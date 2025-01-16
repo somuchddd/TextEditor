@@ -1,70 +1,117 @@
-from PyQt6.QtGui import QTextCharFormat, QFont, QColor
+from PyQt6.QtGui import (
+    QTextCharFormat, QFont, QColor, QTextCursor
+)
 from PyQt6.QtWidgets import (
     QColorDialog, QFontDialog, QTextEdit, QMessageBox, QFileDialog, QInputDialog
 )
-
 class TextEditorFunctions:
     def __init__(self):
         self.numbering = False
+        self.full_document = False
 
-    def toggle_bold(self, text_field):
-        cursor = text_field.textCursor()  
-        if cursor.hasSelection():  
+    def toggle_bold(self, text_widget):
+        cursor = text_widget.currentWidget().textCursor()  
+        if self.full_document == False:
+            if cursor.hasSelection():  
+                current_format = cursor.charFormat()
+                char_format = QTextCharFormat()
+                char_format.setFontWeight(QFont.Weight.Bold if current_format.fontWeight() != QFont.Weight.Bold else QFont.Weight.Normal)
+                cursor.mergeCharFormat(char_format)
+            else: 
+                current_weight = text_widget.currentWidget().fontWeight()
+                text_widget.currentWidget().setFontWeight(QFont.Weight.Bold if current_weight != QFont.Weight.Bold else QFont.Weight.Normal)
+        else:
             current_format = cursor.charFormat()
-            char_format = QTextCharFormat()
+            for i in range(text_widget.count()):
+                text_field = text_widget.widget(i)
+                cursor = text_field.textCursor()
+                cursor.select(QTextCursor.SelectionType.Document)
+                char_format = QTextCharFormat()
+                char_format.setFontWeight(QFont.Weight.Bold if current_format.fontWeight() != QFont.Weight.Bold else QFont.Weight.Normal)
+                cursor.mergeCharFormat(char_format)
+   
+    def toggle_italic(self, text_widget):
+        cursor = text_widget.currentWidget().textCursor()
+        if self.full_document == False:
+            if cursor.hasSelection():
+                current_format = cursor.charFormat()
+                char_format = QTextCharFormat()
 
-            char_format.setFontWeight(QFont.Weight.Bold if current_format.fontWeight() != QFont.Weight.Bold else QFont.Weight.Normal)
-            cursor.mergeCharFormat(char_format)
+                char_format.setFontItalic(not current_format.fontItalic())
+                cursor.mergeCharFormat(char_format)
+            else:
+                current_italic = text_widget.currentWidget().fontItalic()
+                text_widget.currentWidget().setFontItalic(not current_italic)
         else: 
-            current_weight = text_field.fontWeight()
-            text_field.setFontWeight(QFont.Weight.Bold if current_weight != QFont.Weight.Bold else QFont.Weight.Normal)
+            current_format = cursor.charFormat()
+            for i in range(text_widget.count()):
+                text_field = text_widget.widget(i)
+                cursor = text_field.textCursor()
+                cursor.select(QTextCursor.SelectionType.Document)
+                char_format = QTextCharFormat()
+                char_format.setFontItalic(not current_format.fontItalic())
+                cursor.mergeCharFormat(char_format)
             
-    def toggle_italic(self, text_field):
-        cursor = text_field.textCursor()
-        if cursor.hasSelection():
+    def toggle_underline(self, text_widget):
+        cursor = text_widget.currentWidget().textCursor()
+        if not self.full_document:
+            if cursor.hasSelection():
+                current_format = cursor.charFormat()
+                char_format = QTextCharFormat()
+
+                char_format.setFontUnderline(not current_format.fontUnderline())
+                cursor.mergeCharFormat(char_format)
+            else:
+                current_underline = text_widget.currentWidget().fontUnderline()
+                text_widget.currentWidget().setFontUnderline(not current_underline)
+        else: 
             current_format = cursor.charFormat()
-            char_format = QTextCharFormat()
+            for i in range(text_widget.count()):
+                text_field = text_widget.widget(i)
+                cursor = text_field.textCursor()
+                cursor.select(QTextCursor.SelectionType.Document)
+                char_format = QTextCharFormat()
+                char_format.setFontUnderline(not current_format.fontUnderline())
+                cursor.mergeCharFormat(char_format)
 
-            char_format.setFontItalic(not current_format.fontItalic())
-            cursor.mergeCharFormat(char_format)
-        else:
-            current_italic = text_field.fontItalic()
-            text_field.setFontItalic(not current_italic)
-
-    def toggle_underline(self, text_field):
-        cursor = text_field.textCursor()
-        if cursor.hasSelection():
-            current_format = cursor.charFormat()
-            char_format = QTextCharFormat()
-
-            char_format.setFontUnderline(not current_format.fontUnderline())
-            cursor.mergeCharFormat(char_format)
-        else:
-            current_underline = text_field.fontUnderline()
-            text_field.setFontUnderline(not current_underline)
-
-    def change_font(self, text_field):
+    def change_font(self, text_widget):
         font, ok = QFontDialog.getFont()
-        if ok:
-            cursor = text_field.textCursor()
+        if ok and not self.full_document:
+            cursor = text_widget.currentWidget().textCursor()
             if cursor.hasSelection():
                 char_format = QTextCharFormat()
                 char_format.setFont(font)
                 cursor.mergeCharFormat(char_format)
             else:
-                text_field.setCurrentFont(font)
+                text_widget.currentWidget().setCurrentFont(font)
+        elif ok and self.full_document: 
+            for i in range(text_widget.count()):
+                text_field = text_widget.widget(i)
+                cursor = text_field.textCursor()
+                cursor.select(QTextCursor.SelectionType.Document)
+                char_format = QTextCharFormat()
+                char_format.setFont(font)
+                cursor.mergeCharFormat(char_format)
 
-    def change_text_color(self, text_field):
+    def change_text_color(self, text_widget):
         color = QColorDialog.getColor()
-        if color.isValid():
-            cursor = text_field.textCursor()
+        if color.isValid() and not self.full_document:
+            cursor = text_widget.currentWidget().textCursor()
             if cursor.hasSelection():
                 char_format = QTextCharFormat()
                 char_format.setForeground(color)
                 cursor.mergeCharFormat(char_format)
             else:
-                text_field.setTextColor(color)
-    
+                text_widget.currentWidget().setTextColor(color)
+        elif color.isValid() and self.full_document:
+            for i in range(text_widget.count()):
+                text_field = text_widget.widget(i)
+                cursor = text_field.textCursor()
+                cursor.select(QTextCursor.SelectionType.Document)
+                char_format = QTextCharFormat()
+                char_format.setForeground(color)
+                cursor.mergeCharFormat(char_format)
+
     def insert_image(self, text_field):
         file_name, _ = QFileDialog.getOpenFileName(None, "Выбрать изображение", "", "Изображение (*.png *.jpg *.jpeg)")
         if file_name:
@@ -107,3 +154,6 @@ class TextEditorFunctions:
         else:
             QMessageBox.warning(None, "Ошибка", "Нет открытых страниц для удаления.")
         self.update_titles(text_widget)
+
+    def toggle_full_document_format(self):
+        self.full_document = not self.full_document
