@@ -2,11 +2,11 @@ from PyQt6.QtGui import (
     QTextCharFormat, QFont, QColor, QTextCursor
 )
 from PyQt6.QtWidgets import (
-    QColorDialog, QFontDialog, QTextEdit, QMessageBox, QFileDialog, QInputDialog
+    QColorDialog, QFontDialog, QFileDialog, QInputDialog
 )
-class TextEditorFunctions:
+
+class TextEditorFunctions():
     def __init__(self):
-        self.numbering = False
         self.full_document = False
 
     def toggle_bold(self, text_widget):
@@ -127,33 +127,6 @@ class TextEditorFunctions:
             cursor = text_field.textCursor()
             cursor.insertText(url, hyperlink_style)
             cursor.insertText(" ", QTextCharFormat())
-        
-    def add_page(self, text_widget):
-        if self.numbering == True:
-            page_title = f"Страница {text_widget.count() + 1}"
-        else:
-            page_title = "Страница"
-        text_widget.addTab(QTextEdit(), page_title)
-    
-    def update_titles(self, text_widget):
-        for i in range(text_widget.count()):
-            if self.numbering == True:
-                title = f"Страница {i + 1}"
-            else: 
-                title = f"Страница"
-            text_widget.setTabText(i, title)
-            
-    def toggle_numbering(self, text_widget):
-        self.numbering = not self.numbering
-        self.update_titles(text_widget)
-
-    def delete_page(self, text_widget):
-        current_index = text_widget.currentIndex()
-        if current_index != -1:
-            text_widget.removeTab(current_index)
-        else:
-            QMessageBox.warning(None, "Ошибка", "Нет открытых страниц для удаления.")
-        self.update_titles(text_widget)
 
     def toggle_full_document_format(self):
         self.full_document = not self.full_document
