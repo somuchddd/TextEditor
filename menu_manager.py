@@ -2,11 +2,10 @@ from PyQt6.QtGui import QAction
 from PyQt6.QtCore import QSize
 
 class MenuManager():
-    def __init__(self, main_window, format_functions, text_widget, style_manager):
+    def __init__(self, main_window, format_functions, text_widget):
         self.main_window = main_window
         self.format_functions = format_functions
         self.text_widget = text_widget
-        self.style_manager = style_manager
     
     def create_menubar(self):
         main_menu = self.main_window.menuBar()
@@ -60,8 +59,5 @@ class MenuManager():
         format_menu.addAction(full_document_action)
 
         styles = QAction("Пользовательские стили", self.main_window)
-        styles.triggered.connect(self.open_style_manager)
+        styles.triggered.connect(self.main_window.open_style_manager)
         main_menu.addAction(styles)
-
-    def open_style_manager(self):
-        self.style_manager.show()

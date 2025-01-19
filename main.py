@@ -11,9 +11,8 @@ if __name__ == '__main__':
     format_functions = TextEditorFunctions()
     page_functions = FunctionsWithPages()
     style_manager_functions = StyleManagerFunctions()
-    style_manager = StyleManager(style_manager_functions)
 
-    editor = TextEditorGUI(format_functions, page_functions, style_manager)
+    editor = TextEditorGUI(format_functions, page_functions, style_manager_functions)
     editor.show()
 
     sys.exit(app.exec())

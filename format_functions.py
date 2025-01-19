@@ -13,14 +13,11 @@ class TextEditorFunctions():
         if text_widget.count() != 0:
             cursor = text_widget.currentWidget().textCursor()  
             if self.full_document == False:
-                if cursor.hasSelection():  
-                    current_format = cursor.charFormat()
-                    char_format = QTextCharFormat()
-                    char_format.setFontWeight(QFont.Weight.Bold if current_format.fontWeight() != QFont.Weight.Bold else QFont.Weight.Normal)
-                    cursor.mergeCharFormat(char_format)
-                else: 
-                    current_weight = text_widget.currentWidget().fontWeight()
-                    text_widget.currentWidget().setFontWeight(QFont.Weight.Bold if current_weight != QFont.Weight.Bold else QFont.Weight.Normal)
+                current_format = cursor.charFormat()
+                char_format = QTextCharFormat()
+                char_format.setFontWeight(QFont.Weight.Bold if current_format.fontWeight() != QFont.Weight.Bold else QFont.Weight.Normal)
+                cursor.mergeCharFormat(char_format)
+                text_widget.currentWidget().setTextCursor(cursor)
             else:
                 current_format = cursor.charFormat()
                 for i in range(text_widget.count()):
@@ -35,15 +32,11 @@ class TextEditorFunctions():
         if text_widget.count() != 0:
             cursor = text_widget.currentWidget().textCursor()
             if self.full_document == False:
-                if cursor.hasSelection():
                     current_format = cursor.charFormat()
                     char_format = QTextCharFormat()
-
                     char_format.setFontItalic(not current_format.fontItalic())
                     cursor.mergeCharFormat(char_format)
-                else:
-                    current_italic = text_widget.currentWidget().fontItalic()
-                    text_widget.currentWidget().setFontItalic(not current_italic)
+                    text_widget.currentWidget().setTextCursor(cursor)
             else: 
                 current_format = cursor.charFormat()
                 for i in range(text_widget.count()):
@@ -58,16 +51,12 @@ class TextEditorFunctions():
         if text_widget.count() != 0:
             cursor = text_widget.currentWidget().textCursor()
             if not self.full_document:
-                if cursor.hasSelection():
-                    current_format = cursor.charFormat()
-                    char_format = QTextCharFormat()
-
-                    char_format.setFontUnderline(not current_format.fontUnderline())
-                    cursor.mergeCharFormat(char_format)
-                else:
-                    current_underline = text_widget.currentWidget().fontUnderline()
-                    text_widget.currentWidget().setFontUnderline(not current_underline)
-            else: 
+                current_format = cursor.charFormat()
+                char_format = QTextCharFormat()
+                char_format.setFontUnderline(not current_format.fontUnderline())
+                cursor.mergeCharFormat(char_format)
+                text_widget.currentWidget().setTextCursor(cursor)
+            else:   
                 current_format = cursor.charFormat()
                 for i in range(text_widget.count()):
                     text_field = text_widget.widget(i)
@@ -82,12 +71,10 @@ class TextEditorFunctions():
         if text_widget.count() != 0:
             if ok and not self.full_document:
                 cursor = text_widget.currentWidget().textCursor()
-                if cursor.hasSelection():
-                    char_format = QTextCharFormat()
-                    char_format.setFont(font)
-                    cursor.mergeCharFormat(char_format)
-                else:
-                    text_widget.currentWidget().setCurrentFont(font)
+                char_format = QTextCharFormat()
+                char_format.setFont(font)
+                cursor.mergeCharFormat(char_format)
+                text_widget.currentWidget().setTextCursor(cursor)
             elif ok and self.full_document: 
                 for i in range(text_widget.count()):
                     text_field = text_widget.widget(i)
@@ -102,12 +89,10 @@ class TextEditorFunctions():
         if text_widget.count() != 0:
             if color.isValid() and not self.full_document:
                 cursor = text_widget.currentWidget().textCursor()
-                if cursor.hasSelection():
-                    char_format = QTextCharFormat()
-                    char_format.setForeground(color)
-                    cursor.mergeCharFormat(char_format)
-                else:
-                    text_widget.currentWidget().setTextColor(color)
+                char_format = QTextCharFormat()
+                char_format.setForeground(color)
+                cursor.mergeCharFormat(char_format)
+                text_widget.currentWidget().setTextCursor(cursor)
             elif color.isValid() and self.full_document:
                 for i in range(text_widget.count()):
                     text_field = text_widget.widget(i)
