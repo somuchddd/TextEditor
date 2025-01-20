@@ -1,6 +1,7 @@
 from PyQt6.QtGui import QAction, QIcon
 from PyQt6.QtCore import QSize
 
+
 class MenuManager():
     def __init__(self, main_window, format_functions, page_functions, text_widget):
         self.main_window = main_window
@@ -63,6 +64,10 @@ class MenuManager():
         full_document_action.triggered.connect(lambda: self.format_functions.toggle_full_document_format())
         format_menu.addAction(full_document_action)
 
-        styles = QAction("Пользовательские стили", self.main_window)
-        styles.triggered.connect(self.main_window.open_style_manager)
-        main_menu.addAction(styles)
+        styles_action = QAction("Пользовательские стили", self.main_window)
+        styles_action.triggered.connect(self.main_window.open_style_manager)
+        main_menu.addAction(styles_action)
+
+        search_action = QAction("Поиск и замена", self.main_window)
+        search_action.triggered.connect(self.main_window.open_search_manager)
+        main_menu.addAction(search_action)

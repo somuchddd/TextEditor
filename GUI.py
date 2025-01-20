@@ -5,6 +5,8 @@ from PyQt6.QtGui import QIcon
 from toolbar_manager import ToolbarManager
 from menu_manager import MenuManager
 from style_manager import StyleManager
+from search_manager import SearchAndReplaceManager
+
 
 class TextEditorGUI(QMainWindow):
     def __init__(self, format_functions, page_functions, style_manager_functions):
@@ -18,6 +20,8 @@ class TextEditorGUI(QMainWindow):
 
         self.style_manager = StyleManager(self, self.text_widget, style_manager_functions)
 
+        self.search_manager = SearchAndReplaceManager(self)
+
         self.menubar_manager = MenuManager(self, format_functions, page_functions, self.text_widget)
         self.menubar_manager.create_menubar()
 
@@ -28,5 +32,8 @@ class TextEditorGUI(QMainWindow):
 
     def open_style_manager(self):
         self.style_manager.show()
+
+    def open_search_manager(self):
+        self.search_manager.show()
     
     
