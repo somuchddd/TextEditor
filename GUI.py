@@ -18,7 +18,7 @@ class TextEditorGUI(QMainWindow):
 
         self.style_manager = StyleManager(self, self.text_widget, style_manager_functions)
 
-        self.menubar_manager = MenuManager(self, format_functions, self.text_widget)
+        self.menubar_manager = MenuManager(self, format_functions, page_functions, self.text_widget)
         self.menubar_manager.create_menubar()
 
         self.toolbar_manager = ToolbarManager(self, page_functions)

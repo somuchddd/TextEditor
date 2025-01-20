@@ -5,6 +5,10 @@ from PyQt6.QtWidgets import (
 class FunctionsWithPages():
     def __init__(self):
         self.numbering = False
+
+    def create_new_file(self, text_widget):
+        text_widget.clear()
+        self.add_page(text_widget)
         
     def add_page(self, text_widget):
         text_field = QTextEdit()

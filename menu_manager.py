@@ -2,9 +2,10 @@ from PyQt6.QtGui import QAction, QIcon
 from PyQt6.QtCore import QSize
 
 class MenuManager():
-    def __init__(self, main_window, format_functions, text_widget):
+    def __init__(self, main_window, format_functions, page_functions, text_widget):
         self.main_window = main_window
         self.format_functions = format_functions
+        self.page_functions = page_functions
         self.text_widget = text_widget
     
     def create_menubar(self):
@@ -12,6 +13,7 @@ class MenuManager():
 
         file_menu = main_menu.addMenu("Файл")
         new_file_action = QAction(QIcon("img-icons/new_file.png"), "Новый", self.main_window)
+        new_file_action.triggered.connect(lambda: self.page_functions.create_new_file(self.main_window.text_widget))
         file_menu.addAction(new_file_action)
 
         save_file_action = QAction(QIcon("img-icons/save_file.png"), "Сохранить", self.main_window)
