@@ -2,7 +2,7 @@ import sys
 from PyQt6.QtWidgets import QApplication
 from format_functions import TextEditorFunctions
 from page_functions import FunctionsWithPages
-from style_manager import StyleManager, StyleManagerFunctions
+from style_manager import StyleManagerFunctions
 from GUI import TextEditorGUI
 
 if __name__ == '__main__':

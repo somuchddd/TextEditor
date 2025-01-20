@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import QToolBar
-from PyQt6.QtGui import QAction
+from PyQt6.QtGui import QAction, QIcon
 from PyQt6.QtCore import Qt
 
 class ToolbarManager():
@@ -14,14 +14,18 @@ class ToolbarManager():
 
         toolbar.setFixedHeight(35)
 
-        add_action = QAction("Создать страницу", self.main_window)
+        add_action = QAction(QIcon("img-icons/add_page.png"), "Создать страницу", self.main_window)
         add_action.triggered.connect(lambda: self.page_functions.add_page(self.main_window.text_widget))
         toolbar.addAction(add_action)
 
-        delete_action = QAction("Удалить текущую страницу", self.main_window)
+        toolbar.addSeparator()
+
+        delete_action = QAction(QIcon("img-icons/delete_page.png"), "Удалить текущую страницу", self.main_window)
         delete_action.triggered.connect(lambda: self.page_functions.delete_page(self.main_window.text_widget))
         toolbar.addAction(delete_action)
 
-        numbering_action = QAction("Включить/отключить нумерацию ", self.main_window)
+        toolbar.addSeparator()
+
+        numbering_action = QAction(QIcon("img-icons/numbering.png"), "Включить/отключить нумерацию ", self.main_window)
         numbering_action.triggered.connect(lambda: self.page_functions.toggle_numbering(self.main_window.text_widget))
         toolbar.addAction(numbering_action)

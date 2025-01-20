@@ -7,11 +7,13 @@ class FunctionsWithPages():
         self.numbering = False
         
     def add_page(self, text_widget):
+        text_field = QTextEdit()
+        text_field.setPlainText(" ")
         if self.numbering == True:
             page_title = f"Страница {text_widget.count() + 1}"
         else:
             page_title = "Страница"
-        text_widget.addTab(QTextEdit(), page_title)
+        text_widget.addTab(text_field, page_title)
     
     def update_titles(self, text_widget):
         for i in range(text_widget.count()):

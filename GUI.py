@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import (
     QMainWindow, QTabWidget
 )
+from PyQt6.QtGui import QIcon
 from toolbar_manager import ToolbarManager
 from menu_manager import MenuManager
 from style_manager import StyleManager
@@ -10,6 +11,7 @@ class TextEditorGUI(QMainWindow):
         super().__init__()
         self.setWindowTitle("Текстовый процессор")
         self.setGeometry(100, 100, 1280, 720)
+        self.setWindowIcon(QIcon("img-icons/text_editor.png"))
 
         self.text_widget = QTabWidget(self)
         self.setCentralWidget(self.text_widget)
@@ -26,3 +28,5 @@ class TextEditorGUI(QMainWindow):
 
     def open_style_manager(self):
         self.style_manager.show()
+    
+    

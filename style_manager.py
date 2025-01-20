@@ -2,7 +2,7 @@ from PyQt6.QtWidgets import (
     QDialog, QVBoxLayout, QPushButton, QLabel, QComboBox, QInputDialog, QColorDialog, QFontDialog, QMessageBox
 )
 from PyQt6.QtGui import (
-    QFont, QColor, QTextCharFormat
+    QFont, QColor, QTextCharFormat, QIcon
 )
 class StyleManager(QDialog):
     def __init__(self, main_window, text_widget, style_manager_functions):
@@ -13,6 +13,7 @@ class StyleManager(QDialog):
 
         self.setWindowTitle("Пользовательские стили")
         self.setGeometry(700, 200, 300, 200)
+        self.setWindowIcon(QIcon("img-icons/style_manager.png"))
 
         self.layout = QVBoxLayout(self)
 
