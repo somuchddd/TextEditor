@@ -24,7 +24,7 @@ class StyleManager(QDialog):
         self.layout.addWidget(self.create_style_button)
 
         self.apply_style_button = QPushButton("Применить стиль")
-        self.apply_style_button.clicked.connect(self.apply_style)
+        self.apply_style_button.clicked.connect(lambda: self.style_manager_functions.apply_style_to_text(self.text_widget, self.styles_list))
         self.layout.addWidget(self.apply_style_button)
 
         self.label = QLabel("Выбрать стиль:")
@@ -32,14 +32,6 @@ class StyleManager(QDialog):
 
         self.styles_list = QComboBox()
         self.layout.addWidget(self.styles_list)
-
-    def apply_style(self):
-        current_index = self.styles_list.currentIndex()
-        if current_index >= 0:
-            style = self.style_manager_functions.styles[current_index]
-            self.style_manager_functions.apply_style_to_text(self.main_window.text_widget.currentWidget(), style)
-        else: 
-            QMessageBox.warning(None, "Ошибка", "Стиль не выбран")
 
 
 class StyleManagerFunctions():
@@ -57,15 +49,21 @@ class StyleManagerFunctions():
                     self.styles.append(style)
                     styles_list.addItem(self.styles[-1][0])
 
-    def apply_style_to_text(self, text_edit, style):
-        font = QFont(style[1], style[2])
-        color = QColor(style[3])
-        cursor = text_edit.textCursor()
-        format = QTextCharFormat()
-        format.setFont(font)
-        format.setForeground(color)
-        cursor.mergeCharFormat(format)
-        text_edit.setTextCursor(cursor)
+    def apply_style_to_text(self, text_widget, styles_list):
+        current_index = styles_list.currentIndex()
+        if current_index >= 0:
+            style = self.styles[current_index]
+            font = QFont(style[1], style[2])
+            color = QColor(style[3])
+            cursor = text_widget.currentWidget().textCursor()
+            format = QTextCharFormat()
+            format.setFont(font)
+            format.setForeground(color)
+            cursor.mergeCharFormat(format)
+            text_widget.currentWidget().setTextCursor(cursor)
+        else: 
+            QMessageBox.warning(None, "Ошибка", "Стиль не выбран")
+
     
 
 
