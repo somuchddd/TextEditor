@@ -16,8 +16,12 @@ class FunctionsWithPages():
     def add_page(self, text_widget):
         text_field = QTextEdit()
         text_field.setTextInteractionFlags(Qt.TextInteractionFlag.TextBrowserInteraction | Qt.TextInteractionFlag.TextEditable)
+
         original_mouse_press_event = text_field.mousePressEvent
         text_field.mousePressEvent = lambda event: self.text_field_mouse_press_event(event, text_field, original_mouse_press_event)
+
+        text_field.insertFromMimeData = lambda clipboard: self.insert_plain_text(text_field, clipboard)
+
         if self.numbering == True:
             page_title = f"Страница {text_widget.count() + 1}"
         else:
@@ -54,3 +58,8 @@ class FunctionsWithPages():
                 QDesktopServices.openUrl(QUrl(url))
                 return
         original_mouse_press_event(event)
+
+    def insert_plain_text(self, text_field, clipboard):
+        plain_text = clipboard.text()
+        cursor = text_field.textCursor()
+        cursor.insertText(plain_text)

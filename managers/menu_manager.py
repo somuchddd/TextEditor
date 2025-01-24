@@ -75,3 +75,7 @@ class MenuManager():
         search_action = QAction("Поиск и замена", self.main_window)
         search_action.triggered.connect(self.main_window.open_search_manager)
         main_menu.addAction(search_action)
+
+        interval_action = QAction("Интервалы и отступы", self.main_window)
+        interval_action.triggered.connect(self.main_window.open_interval_manager)
+        main_menu.addAction(interval_action)
