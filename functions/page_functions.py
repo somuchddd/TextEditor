@@ -1,6 +1,9 @@
 from PyQt6.QtWidgets import (
     QTextEdit, QMessageBox
 )
+from PyQt6.QtCore import Qt, QUrl
+from PyQt6.QtGui import QTextCursor, QDesktopServices
+
 
 class FunctionsWithPages():
     def __init__(self):
@@ -12,7 +15,9 @@ class FunctionsWithPages():
         
     def add_page(self, text_widget):
         text_field = QTextEdit()
-        text_field.setPlainText(" ")
+        text_field.setTextInteractionFlags(Qt.TextInteractionFlag.TextBrowserInteraction | Qt.TextInteractionFlag.TextEditable)
+        original_mouse_press_event = text_field.mousePressEvent
+        text_field.mousePressEvent = lambda event: self.text_field_mouse_press_event(event, text_field, original_mouse_press_event)
         if self.numbering == True:
             page_title = f"Страница {text_widget.count() + 1}"
         else:
@@ -38,3 +43,14 @@ class FunctionsWithPages():
         else:
             QMessageBox.warning(None, "Ошибка", "Нет открытых страниц для удаления.")
         self.update_titles(text_widget)
+
+    def text_field_mouse_press_event(self, event, text_field, original_mouse_press_event):
+        cursor = text_field.cursorForPosition(event.pos())
+        cursor.select(QTextCursor.SelectionType.WordUnderCursor)
+        char_format = cursor.charFormat()
+        if char_format.isAnchor():  
+            url = char_format.anchorHref()
+            if url:
+                QDesktopServices.openUrl(QUrl(url))
+                return
+        original_mouse_press_event(event)

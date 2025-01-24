@@ -115,6 +115,8 @@ class TextEditorFunctions():
         hyperlink_style = QTextCharFormat()
         hyperlink_style.setForeground(QColor(0, 128, 255))
         hyperlink_style.setFontUnderline(True)
+        hyperlink_style.setAnchor(True)
+        hyperlink_style.setAnchorHref(url)
         if url and ok:
             cursor = text_field.textCursor()
             cursor.insertText(url, hyperlink_style)
