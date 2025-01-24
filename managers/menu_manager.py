@@ -64,6 +64,10 @@ class MenuManager():
         full_document_action.triggered.connect(lambda: self.format_functions.toggle_full_document_format())
         format_menu.addAction(full_document_action)
 
+        clear_format_action = QAction("Сбросить форматирование", self.main_window)
+        clear_format_action.triggered.connect(lambda: self.format_functions.clear_format(self.text_widget))
+        format_menu.addAction(clear_format_action)
+
         styles_action = QAction("Пользовательские стили", self.main_window)
         styles_action.triggered.connect(self.main_window.open_style_manager)
         main_menu.addAction(styles_action)

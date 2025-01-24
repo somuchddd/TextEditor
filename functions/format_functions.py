@@ -122,3 +122,6 @@ class TextEditorFunctions():
 
     def toggle_full_document_format(self):
         self.full_document = not self.full_document
+
+    def clear_format(self, text_widget):
+        text_widget.currentWidget().setCurrentCharFormat(QTextCharFormat())

@@ -14,7 +14,7 @@ class StyleManager(QDialog):
         self.style_manager_functions = style_manager_functions
 
         self.setWindowTitle("Пользовательские стили")
-        self.setGeometry(700, 200, 300, 150)
+        self.setGeometry(600, 200, 300, 150)
         self.setWindowIcon(QIcon("img-icons/style_manager.png"))
 
         self.layout = QVBoxLayout(self)
