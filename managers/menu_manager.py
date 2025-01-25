@@ -26,7 +26,7 @@ class MenuManager():
         insert_menu = main_menu.addMenu("Вставка")
 
         image_insert_action = QAction(QIcon("img-icons/image.png"), "Изображение", self.main_window)
-        image_insert_action.triggered.connect(lambda: self.format_functions.insert_image(self.main_window.text_widget.currentWidget(), QSize(400, 250)))
+        image_insert_action.triggered.connect(lambda: self.format_functions.insert_image(self.main_window.text_widget.currentWidget(), 600))
         insert_menu.addAction(image_insert_action)
 
         hyperlink_insert_action = QAction(QIcon("img-icons/hyperlink.png"), "Гиперссылка", self.main_window)

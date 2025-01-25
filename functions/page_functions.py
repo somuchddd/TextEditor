@@ -1,5 +1,5 @@
 from PyQt6.QtWidgets import (
-    QTextEdit, QMessageBox
+    QTextEdit, QMessageBox,QWidget, QGridLayout
 )
 from PyQt6.QtCore import Qt, QUrl
 from PyQt6.QtGui import QTextCursor, QDesktopServices
@@ -26,6 +26,9 @@ class FunctionsWithPages():
             page_title = f"Страница {text_widget.count() + 1}"
         else:
             page_title = "Страница"
+
+        text_field.setStyleSheet(""" QTextEdit { margin: 5 200 } """)
+
         text_widget.addTab(text_field, page_title)
     
     def update_titles(self, text_widget):

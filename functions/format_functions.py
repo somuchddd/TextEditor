@@ -1,9 +1,11 @@
 from PyQt6.QtGui import (
-    QTextCharFormat, QFont, QColor, QTextCursor, QImage
+    QTextCharFormat, QFont, QColor, QTextCursor, QImage, QTextBlockFormat
 )
 from PyQt6.QtWidgets import (
     QColorDialog, QFontDialog, QFileDialog, QInputDialog
 )
+from PyQt6.QtCore import Qt
+
 
 class TextEditorFunctions():
     def __init__(self):
@@ -106,10 +108,16 @@ class TextEditorFunctions():
         file_name, _ = QFileDialog.getOpenFileName(None, "Выбрать изображение", "", "Изображение (*.png *.jpg *.jpeg)")
         if file_name:
             image = QImage(file_name)
-            image = image.scaled(size)
+            image = image.scaled(size, size, Qt.AspectRatioMode.KeepAspectRatio)
             cursor = text_field.textCursor()
+
+            cursor.insertBlock()
+            block_format = QTextBlockFormat()
+            block_format.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            cursor.mergeBlockFormat(block_format)
+
             cursor.insertImage(image)
-    
+
     def insert_hyperlink(self, text_field):
         url, ok = QInputDialog.getText(None, "Введите ссылку", "Ссылка")
         hyperlink_style = QTextCharFormat()
