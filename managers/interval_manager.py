@@ -83,12 +83,20 @@ class IntervalManagerFunctions():
             text_field = text_widget.currentWidget()
 
             block_format = QTextBlockFormat()
-            block_format.setLineHeight(int(interval), QTextBlockFormat.LineHeightTypes.ProportionalHeight.value)
+            block_format.setLineHeight(int(interval), QTextBlockFormat.LineHeightTypes.FixedHeight.value)
 
             cursor = text_field.textCursor()
-            cursor.clearSelection()
-            cursor.select(QTextCursor.SelectionType.Document)
-            cursor.mergeBlockFormat(block_format)
+            cursor.beginEditBlock()
+
+        # Перебираем все блоки, начиная со второго
+            block = text_field.document().begin().next()
+            while block.isValid():
+                cursor.setPosition(block.position())
+                cursor.setBlockFormat(block_format)
+                block = block.next()
+
+            # Завершаем редактирование
+            cursor.endEditBlock()
         except:
             QMessageBox.warning(None, "Ошибка", "Введите межстрочный интервал")
     
@@ -101,7 +109,7 @@ class IntervalManagerFunctions():
         text_widget.setCurrentIndex(current_index)
 
     def reset_interval(self, text_widget):
-        self.apply_interval(text_widget, 100)
+        self.apply_interval(text_widget, 16)
 
 
     def apply_indents(self, text_widget, left_indent, top_indent, right_indent, bottom_indent):
