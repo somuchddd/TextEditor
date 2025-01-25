@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton, QHBoxLayout, QMessageBox
+from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QPushButton, QHBoxLayout, QMessageBox, QCheckBox
 from PyQt6.QtGui import QIcon, QIntValidator, QTextCursor, QTextBlockFormat
 
 class IntervalManager(QDialog):
@@ -26,6 +26,10 @@ class IntervalManager(QDialog):
         self.interval_apply_button = QPushButton("Применить межстрочные интервалы")
         self.interval_apply_button.clicked.connect(lambda: self.interval_manager_functions.apply_interval(self.text_widget, self.interval_input.text()))
         self.interval_layout.addWidget(self.interval_apply_button)
+
+        self.interval_apply_full_doc = QPushButton("Применить интервалы ко всему документу")
+        self.interval_apply_full_doc.clicked.connect(lambda: self.interval_manager_functions.apply_interval_to_full_doc(self.text_widget, self.interval_input.text()))
+        self.interval_layout.addWidget(self.interval_apply_full_doc)
 
         self.interval_reset_button = QPushButton("Сбросить межстрочные интервалы")
         self.interval_reset_button.clicked.connect(lambda: self.interval_manager_functions.reset_interval(self.text_widget))
@@ -59,6 +63,10 @@ class IntervalManager(QDialog):
         self.indent_apply_button.clicked.connect(lambda: self.interval_manager_functions.apply_indents(self.text_widget, self.left_indent_input.text(), self.top_indent_input.text(), self.right_indent_input.text(), self.bottom_indent_input.text()))
         self.indent_layout.addWidget(self.indent_apply_button)
 
+        self.indent_apply_button = QPushButton("Применить отступы ко всему документу:")
+        self.indent_apply_button.clicked.connect(lambda: self.interval_manager_functions.apply_indents_to_full_doc(self.text_widget, self.left_indent_input.text(), self.top_indent_input.text(), self.right_indent_input.text(), self.bottom_indent_input.text()))
+        self.indent_layout.addWidget(self.indent_apply_button)
+
         self.indent_reset_button = QPushButton("Сбросить отступы")
         self.indent_reset_button.clicked.connect(lambda: self.interval_manager_functions.reset_indents(self.text_widget))
         self.indent_layout.addWidget(self.indent_reset_button)
@@ -83,9 +91,18 @@ class IntervalManagerFunctions():
             cursor.mergeBlockFormat(block_format)
         except:
             QMessageBox.warning(None, "Ошибка", "Введите межстрочный интервал")
+    
+    def apply_interval_to_full_doc(self, text_widget, interval):
+        current_index = text_widget.currentIndex()
+        for tab_index in range(text_widget.count()):
+            text_widget.setCurrentIndex(tab_index)
+            self.apply_interval(text_widget, interval)
+            
+        text_widget.setCurrentIndex(current_index)
 
     def reset_interval(self, text_widget):
         self.apply_interval(text_widget, 100)
+
 
     def apply_indents(self, text_widget, left_indent, top_indent, right_indent, bottom_indent):
         try:
@@ -94,6 +111,13 @@ class IntervalManagerFunctions():
             text_field.setViewportMargins(*page_indents)
         except:
             QMessageBox.warning(None, "Ошибка", "Введите отступы со всех сторон")
+
+    def apply_indents_to_full_doc(self, text_widget, left_indent, top_indent, right_indent, bottom_indent):
+        current_index = text_widget.currentIndex()
+        for tab_index in range(text_widget.count()):
+            text_widget.setCurrentIndex(tab_index)
+            self.apply_indents(text_widget, left_indent, top_indent, right_indent, bottom_indent)
+        text_widget.setCurrentIndex(current_index)
 
     def reset_indents(self, text_widget):
         self.apply_indents(text_widget, 0, 0, 0, 0)
